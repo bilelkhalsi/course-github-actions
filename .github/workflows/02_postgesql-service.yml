@@ -6,11 +6,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 env:
-  DATABASE_NAME: pgdatab
-  DATABASE_USER: pg_admin
-  DATABASE_PASS: pgAdmin
-  DATABASE_PORT: 5432 
-  DATABASE_INIT: ./init.sql 
+  DATABASE_NAME: PGDATAB
+  DATABASE_USER: ${{ github.actor }}
+  DATABASE_PASS: ${{ github.actor }}
 jobs:
   copy-to-branches:
     runs-on: ubuntu-latest
@@ -18,14 +16,16 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_BD: ${{ env.DATABASE_NAME }}
+          POSTGRES_USER: ${{ env.DATABASE_USER }}
+          POSTGRES_PASSWORD: ${{ env.DATABASE_PASS }}
         ports:
-          - 5432:${{env.DATABASE_PORT}}
+          - 5432:5432
         volumes:
-          - ${{env.DATABASE_INIT}}:/docker-entrypoint-initdb.d/init.sql   
+          - init.sql:/docker-entrypoint-initdb.d/sql/init.sql   
         options: >-
           --health-cmd pg_isready
-          --health-internal 10s
+          --health-interval 10s
           --health-timeout 5s
           --health-retries 5
     steps:
