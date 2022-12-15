@@ -1,0 +1,32 @@
+name: Query postgresql
+on:
+  workflow_dispatch:
+env:
+  DATABASE_NAME: pgdatab
+  DATABASE_USER: pg_admin
+  DATABASE_PASS: pgAdmin
+  DATABASE_PORT: 5432 
+  DATABASE_INIT: ./init.sql 
+jobs:
+  copy-to-branches:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - ${{env.DATABASE_PORT}}:${{env.DATABASE_PORT}}
+        volumes:
+          - ${{env.DATABASE_INIT}}:/docker-entrypoint-initdb.d/init.sql   
+        options: >-
+          --health-cmd pg_isready
+          --health-internal 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Copy To Branches Action
+        uses: planetoftheweb/copy-to-branches@v1
