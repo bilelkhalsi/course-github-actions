@@ -10,7 +10,7 @@ env:
   DATABASE_USER: ${{ github.actor }}
   DATABASE_PASS: ${{ github.actor }}
 jobs:
-  install:
+  setup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -20,9 +20,10 @@ jobs:
         with:
           node-version: 16
           cache: 'npm'
+          cache-dependency-path: package-lock.json
       - run: npm ci
   test:
-    needs: install
+    needs: setup
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -41,10 +42,13 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'npm'
+      - run: npm ci
       - run: npm test
      
       
