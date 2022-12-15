@@ -10,7 +10,7 @@ env:
   DATABASE_USER: ${{ github.actor }}
   DATABASE_PASS: ${{ github.actor }}
 jobs:
-  install-dependencies:
+  install:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -21,7 +21,8 @@ jobs:
           node-version: 16
           cache: 'npm'
       - run: npm ci
-  run-tests:
+  test:
+    needs: install
     runs-on: ubuntu-latest
     services:
       postgres:
