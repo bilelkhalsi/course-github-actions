@@ -10,19 +10,7 @@ env:
   DATABASE_USER: ${{ github.actor }}
   DATABASE_PASS: ${{ github.actor }}
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: 'npm'
-      - run: npm ci
-  test:
-    needs: setup
+  build-and-test:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -41,14 +29,20 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v3
+      - name: Setup node env (cache enabled)
+        uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: 'npm'
-      - run: npm ci
-      - run: npm test
+      - name: Install dependencies
+        run: npm ci
+      - name: Build Api
+        run: npm run build
+      - name: Execute unit tests
+        run: npm test
      
       
