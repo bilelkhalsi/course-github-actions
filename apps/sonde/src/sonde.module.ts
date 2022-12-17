@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
-import { SondeController } from './sonde.controller';
-import { SondeService } from './sonde.service';
+import { WebDataModule } from './web.data.module';
 
 @Module({
-  imports: [],
-  controllers: [SondeController],
-  providers: [SondeService],
+  imports: [WebDataModule],
+  providers: [],
 })
 export class SondeModule {}
