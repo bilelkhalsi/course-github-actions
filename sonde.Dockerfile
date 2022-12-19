@@ -13,10 +13,13 @@ ARG user=sondeu \
     gid=1000
 
 RUN groupadd -g ${gid} ${group} \
-    useradd -u ${uid} -g ${group} -s /bin/sh -m ${user}
-
-COPY --from=develop /workspace/dist/apps/sonde /home/${user}/sonde
+    && useradd -u ${uid} -g ${group} -s /bin/sh -m ${user}
 
 USER ${uid}:${gid}
 
-CMD ["node", "./sonde/main.js"]  
+COPY --from=develop /workspace/dist /workspace/package.json /home/${user}/dist
+
+RUN ls -all \
+    && npm i --production
+
+CMD ["node", "./dist/main.js"]  
