@@ -5,7 +5,8 @@
   "description": "mAPIs Repository",
   "license": "MIT",
   "scripts": {
-    "build": "nest build",
+    "build:dispatcher": "nest build dispatcher",
+    "build:sonde": "nest build sonde",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start:dispatcher": "nest start dispatcher",
     "start:sonde": "nest start sonde",
