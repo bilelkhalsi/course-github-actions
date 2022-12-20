@@ -3,7 +3,8 @@ FROM node:latest AS develop
 WORKDIR /workspace
 COPY . ./
 RUN npm i \
-    && npm run build:sonde 
+    && npm run build:sonde \
+    && rm -rf node_modules
 
 FROM ghcr.io/puppeteer/puppeteer:19.4.1 AS release
 
