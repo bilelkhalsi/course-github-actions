@@ -24,11 +24,16 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        
-      - name: Build and push Docker image
+
+      - 
+        name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: .
           file: sonde.Dockerfile
-          push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+      -
+        name: Docker image ls -a
+        run: docker image ls -a

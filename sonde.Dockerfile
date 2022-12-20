@@ -2,9 +2,8 @@ FROM node:latest AS develop
 
 WORKDIR /workspace
 COPY . ./
-RUN npm i 
-RUN npm run build:sonde \
-    && ls -all
+RUN npm i \
+    && npm run build:sonde 
 
 FROM ghcr.io/puppeteer/puppeteer:19.4.1 AS release
 
