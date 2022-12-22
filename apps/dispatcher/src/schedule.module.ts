@@ -1,3 +1,4 @@
+import { HttpModule } from '@nestjs/axios';
 import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as fs from 'fs/promises';
@@ -16,7 +17,7 @@ function scheduleRepositoryFactory(configService: ConfigService): Promise<Schedu
 }
 
 @Module({
-  imports: [ConfigModule],
+  imports: [ConfigModule, HttpModule],
   controllers: [ScheduleController],
   providers: [
     WebDataClient,
