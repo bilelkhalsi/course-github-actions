@@ -3,15 +3,15 @@ FROM node:latest AS develop
 WORKDIR /workspace
 COPY . ./
 RUN npm i \
-    && npm run build:sonde \
+    && npm run build:dispatcher \
     && rm -rf node_modules
 
-FROM ghcr.io/puppeteer/puppeteer:19.4.1 AS release
+FROM node:latest AS release
 
 USER root
 
-ARG user=sondeu \
-    group=sondeu \
+ARG user=dispatcheru \
+    group=dispatcheru \
     uid=1007 \
     gid=1007
 
@@ -27,4 +27,4 @@ COPY --from=develop /workspace/package.json ./
 
 RUN npm i --omit=dev
 EXPOSE 3000
-CMD ["node", "./dist/apps/sonde/main.js"]  
+CMD ["node", "./dist/apps/dispatcher/main.js"]  

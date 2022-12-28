@@ -5,11 +5,10 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const config = new DocumentBuilder()
-    .setTitle('Print Web page API')
-    .setDescription('Print web page and generate PDF API')
+    .setTitle('Dispatcher is an API to execute job scheduled in schedules.json ')
+    .setDescription('The given job must be scheduled in the schedules.json data file')
     .setVersion('1.0')
-    .addTag('Audit')
-    .addTag('Print')
+    .addTag('Job')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);

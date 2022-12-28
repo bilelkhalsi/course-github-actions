@@ -1,0 +1,12 @@
+{
+
+    "data":[
+        {
+            "sonde": "web",
+            "source": "www.google.com",
+            "selector": "body > #search > #count",
+            "multiple": false,
+            "schedule": "0 */8 * * *"
+        }
+    ]
+}
