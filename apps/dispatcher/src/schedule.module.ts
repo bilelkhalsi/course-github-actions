@@ -5,10 +5,11 @@ import * as fs from 'fs/promises';
 import { ScheduleController } from './api/schedule.controller';
 import { ScheduleRepository } from './data/repositories/schedule.repository';
 import { WebDataClient } from './data/repositories/web.data.client';
+import { ConfigKey, ConfigurationService } from './service/configuration.service';
 import { ScheduleService } from './service/schedule.service';
 
-function scheduleRepositoryFactory(configService: ConfigService): Promise<ScheduleRepository>{
-  return fs.readFile(configService.get('SCHEDULES_FILE_PATH'), 'utf8').then(raw => {
+function scheduleRepositoryFactory(configService: ConfigurationService): Promise<ScheduleRepository>{
+  return fs.readFile(configService.get(ConfigKey.SCHEDULES_FILE_PATH), 'utf8').then(raw => {
     Logger.debug('Loading schedules json file :', raw);
     return new ScheduleRepository(raw);
   }).catch(error=>{
@@ -22,10 +23,11 @@ function scheduleRepositoryFactory(configService: ConfigService): Promise<Schedu
   providers: [
     WebDataClient,
     ScheduleService,
+    ConfigurationService,
     {
       provide: ScheduleRepository,
       useFactory: scheduleRepositoryFactory,
-      inject: [ConfigService]
+      inject: [ConfigurationService]
     }
 ],
 })

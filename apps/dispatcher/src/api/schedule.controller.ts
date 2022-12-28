@@ -1,5 +1,6 @@
 import { Controller, Post, Query } from '@nestjs/common';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Observable } from 'rxjs';
 import { SchedulesResult } from '../data/model/schedule.model';
 import { ScheduleService } from '../service/schedule.service';
 
@@ -14,7 +15,7 @@ export class ScheduleController {
     type: SchedulesResult
   })
   @Post('/schedule')
-  schedule(@Query('schedule') schedule: string): SchedulesResult {
+  schedule(@Query('schedule') schedule: string): Observable<SchedulesResult> {
     return this.scheduleService.schedule(schedule);
   }
 
