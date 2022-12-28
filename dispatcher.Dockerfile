@@ -26,5 +26,5 @@ COPY --from=develop /workspace/dist ./dist/
 COPY --from=develop /workspace/package.json ./
 
 RUN npm i --omit=dev
-
+EXPOSE 3000
 CMD ["node", "./dist/apps/dispatcher/main.js"]  
